@@ -36,9 +36,8 @@ function wordCount(text) {
 
 /*Count sentences */
 function sentenceCount(text) {
-  split = text.split('. ');
-  split.filter(function(x){return isWords(x)}); // Sanity check?
-  split.filter(function(x){return wordCount(x) > 1}); //Single word sentences are probably some other trash.
+  split = text.replace(/([.?!])\s*(?=[a-zA-Z])/, '$1|').split('|'); // More intelligent sentence splitting based on [this answer](http://stackoverflow.com/a/18914855/3959735)
+  split = split.filter(function(x){return wordCount(x) > 1}); //Single word sentences are probably some other trash.
   return split.length;
 }
 
@@ -67,7 +66,7 @@ function fleschKincaid(text) {
 }
 /* Checks that some text actually contains words */
 function isWords(text) {
-  regex = new RegExp(/[a-z]/i);
+  regex = new RegExp(/[a-zA-Z]/);
   return regex.test(text);
 }
 
