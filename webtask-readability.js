@@ -9,7 +9,7 @@ module.exports = function (context, cb) {
     if (error)
       cb(error);
     else {
-      text = nodeHTML.fromString(body, {wordWrap: false, ignoreHref: true, ignoreImage: true});
+      text = nodeHTML.fromString(body, {wordwrap: false, ignoreHref: true, ignoreImage: true});
       var paragraphs = text.split('\n');
       console.log('Found ' + paragraphs.length + ' paragraphs in text.');
       wordcount = wordCount(text);
