@@ -4,10 +4,10 @@ This node script is designed to calculate the readability of a webpage (via the 
 
 #Modules Used#
 - [request](https://github.com/request/request)
-  - Lazy/concise way of stringifying an html document, supported by webtask.
+- [node-html-to-text](https://github.com/werk85/node-html-to-text)
+  - Lazy/concise way of stringifying and sanitising an html document, supported by webtask.
   - There's probably a better way but I lost too much time sorting
   through the list of supported modules and just wanted to get to the
-interesting part
-- [node-html-to-text](https://github.com/werk85/node-html-to-text)
+interesting part 
 
 
