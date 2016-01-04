@@ -1,6 +1,6 @@
 #Design Notes#
 
-This idea maybe isn't the best fit for the webtask but its as good a toy project as any for learning about how the various components need to fit together.
+This idea maybe isn't the best fit for the webtask concept but its as good a toy project as any for learning about how the various components need to fit together.
 
 ##Modules:##
 
