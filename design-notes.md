@@ -21,7 +21,6 @@ available on webtask.io
 - Counting words is the straightforward part
 - Counting sentences is a lot harder than I thought, and for some reason none of the approaches I've tried so far have actually worked properly
 - Counting syllables is definitely the most complex part, but the rough hacky approach I have at the moment is working better than I expected. Could still stand to be improved a bit though
-- 
 
 ##Security Concerns##
 Possible attacks:
