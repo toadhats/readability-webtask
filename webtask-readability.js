@@ -1,10 +1,19 @@
+/*
+  This is an attempt to create a webtask that will compute readability metrics for a page at a given URL. It's been done before, of course, so this is really more of a learning exercise. Results are currently not accurate.
+*/
+
 var request = require('request');
 var nodeHTML = require('html-to-text');
 
-//The skeleton of a webtask...
+//The skeleton of a webtask.
 module.exports = function (context, cb) {
-  // The url is passed into the webtask as data
-  // Works via a curl argument, does it work via url query strings?
+  // The url is passed into the webtask, either as a URL argument or a curl argument.
+  if (!console.log.url) {
+    console.log("No target URL provided");
+    cb(null, {error: 'No URL provided or URL is not readable.'});
+  } else {
+  console.log('Target: ' + context.data.url);
+}
   request.get(context.data.url, function (error, response, body) {
     if (error)
       cb(error);
@@ -13,12 +22,11 @@ module.exports = function (context, cb) {
       var paragraphs = text.split('\n');
       console.log('Found ' + paragraphs.length + ' paragraphs in text.');
       wordcount = wordCount(text);
-      //paragraphs = paragraphs.map(function(x){return nodeHTML.fromString(x)}) // Clearing up any leftover html tags
-      paragraphs = paragraphs.filter(function(x) {return sentenceCount(x) > 1}); // Anything less than 2 sentences is not a real paragraph, and that may be too generous even?
+      paragraphs = paragraphs.filter(function(x) {return sentenceCount(x) > 1}); // Anything less than 2 sentences is not a real paragraph.
       console.log(paragraphs.length + ' paragraphs remain after cull.');
-      console.log(paragraphs);
+      //console.log(paragraphs);
       scores = paragraphs.map(function(x) { return fleschKincaid(x)});
-      console.log(scores);
+      //console.log(scores);
       avgScore = scores.reduce(function(a, b) { return a + b; }, 0) / scores.length;
       cb(null, {
         status: response.statusCode,
@@ -34,9 +42,9 @@ function wordCount(text) {
   return split.length;
 }
 
-/*Count sentences */
+/*Count sentences. This regex *seems* correct now but its always the first suspect if anything goes wrong.... */
 function sentenceCount(text) {
-  split = text.replace(/([.?!])\s*(?=[a-zA-Z])/, '$1|').split('|'); // More intelligent sentence splitting based on [this answer](http://stackoverflow.com/a/18914855/3959735)
+  split = text.replace(/([.?!])\s*(?=[a-zA-Z])/g, '$1|').split('|'); // More intelligent sentence splitting based on [this answer](http://stackoverflow.com/a/18914855/3959735)
   split = split.filter(function(x){return wordCount(x) > 1}); //Single word sentences are probably some other trash.
   return split.length;
 }
