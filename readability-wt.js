@@ -8,7 +8,7 @@ var nodeHTML = require('html-to-text');
 //Everything that happens in a webtask happens in here
 module.exports = function (context, cb) {
   // The url is passed into the webtask, either as a URL argument or a curl argument.
-  if (!console.log.url) {
+  if (!context.data.url) {
     console.log("No target URL provided");
     cb(null, {error: 'No URL provided or URL is not readable.'});
   } else {
@@ -27,6 +27,7 @@ module.exports = function (context, cb) {
       console.log(paragraphs.length + ' paragraphs remain after cull.');
       scores = paragraphs.map(function(x) { return fleschKincaid(x) });
       avgScore = scores.reduce(function(a, b) { return a + b; }, 0) / scores.length;
+      console.log('Flesch-Kincaid Readability Score: ' + avgScore)
       cb(null, {
         status: response.statusCode,
         score: avgScore
@@ -64,7 +65,6 @@ function fleschKincaid(text) {
   avgSyllableWord = syllCount(text) / wordCount(text);
   // Formula from wikipedia. Hardcoded with magic numbers because it can't change obviously.
   score = 206.835 - (1.015 * avgSentenceLength) - (84.6 * avgSyllableWord);
-  console.log('Flesch-Kincaid Readability Score: ' + score)
   return score;
 }
 
